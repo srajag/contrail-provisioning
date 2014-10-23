@@ -156,6 +156,7 @@ class Setup(object):
             'n_api_workers': '1',
             'multi_tenancy': False,
             'haproxy': False,
+            'dpdk': False,
             'region_name': None,
             'ks_auth_protocol':'http',
             'ks_auth_port':'35357',
@@ -259,6 +260,7 @@ class Setup(object):
         parser.add_argument("--service_token", help = "The service password to access keystone")
         parser.add_argument("--region_name", help = "The Region Name in Openstack")
         parser.add_argument("--haproxy", help = "Enable haproxy", action="store_true")
+	parser.add_argument("--dpdk", help = "vRouter/DPDK mode.", action="store_true")
         parser.add_argument("--no_contrail_openstack", help = "Do not provision contrail Openstack in compute node", action="store_true")
         parser.add_argument("--manage_neutron", help = "Provision neutron in Keystone", action="store_true")
         parser.add_argument("--physical_interface", help = "Name of the physical interface to use")
@@ -1452,6 +1454,12 @@ HWADDR=%s
             vgw_intf_list = self._args.vgw_intf_list
             vgw_gateway_routes = self._args.vgw_gateway_routes
             multi_net= False
+            dpdk = self._args.dpdk
+            if dpdk:
+                platform_mode = "dpdk"
+                pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(dev), capture=True)
+            else:
+                platform_mode = "nic"
             if non_mgmt_ip :
                 multi_net= True
                 vhost_ip= non_mgmt_ip
@@ -1521,6 +1529,8 @@ HWADDR=%s
                     '__contrail_control_ip__': compute_ip,
                     '__hypervisor_type__': hypervisor_type,
                     '__vmware_physical_interface__': vmware_dev,
+                    '__contrail_work_mode__': platform_mode,
+                    '__pci_dev__': pci_dev,
                 }
                 self._template_substitute_write(vnswad_conf_template.template,
                         vnswad_conf_template_vals, temp_dir_name + '/vnswad.conf')
@@ -1619,8 +1629,7 @@ SUBCHANNELS=1,2,3
                             local("sudo chkconfig network on")
                             local("sudo chkconfig supervisor-vrouter on")
                 # end pdist == centos | fedora
-
-                if pdist == 'Ubuntu':
+                if pdist == 'Ubuntu' and not dpdk:
                     self._rewrite_net_interfaces_file(dev, mac, vhost_ip, netmask, gateway)
                 # end pdist == ubuntu
 

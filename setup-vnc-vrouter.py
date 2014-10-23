@@ -73,6 +73,8 @@ class SetupVncVrouter(object):
                 setup_args_str = setup_args_str + " --vgw_gateway_routes %s " %(vgw_gateway_routes)
         if self._args.haproxy:
             setup_args_str = setup_args_str + " --haproxy"
+        if self._args.dpdk:
+            setup_args_str = setup_args_str + " --dpdk"
         if self._args.vmware:
             setup_args_str = setup_args_str + " --vmware %s --vmware_username %s --vmware_passwd %s --vmware_vmpg_vswitch %s" %(vmware_ip, vmware_username, vmware_passwd, vmware_vmpg_vswitch)
 
@@ -85,6 +87,8 @@ class SetupVncVrouter(object):
         if self._args.no_contrail_openstack:
             setup_args_str = setup_args_str + " --no_contrail_openstack"
 
+        if self._args.dpdk:
+		print "DPDK mode"
         setup_obj = Setup(setup_args_str)
         setup_obj.do_setup()
         setup_obj.run_services()
@@ -120,6 +124,7 @@ class SetupVncVrouter(object):
             'gateway_routes': None,
             '': None,
             'haproxy': False,
+            'dpdk': False,
             'ks_auth_protocol':'http',
             'ks_auth_port':'35357',
             'amqp_server_ip':'127.0.0.1',
@@ -181,6 +186,7 @@ class SetupVncVrouter(object):
         parser.add_argument("--external_vip", help = "External VIP Address of openstack nodes")
         parser.add_argument("--contrail_internal_vip", help = "VIP Address of config  nodes")
         parser.add_argument("--no_contrail_openstack", help = "Do not provision contrail Openstack in compute node.", action="store_true")
+        parser.add_argument("--dpdk", help = "vRouter/DPDK mode.", action="store_true")
 
         self._args = parser.parse_args(remaining_argv)
 
