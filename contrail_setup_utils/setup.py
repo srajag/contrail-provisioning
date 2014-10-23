@@ -1761,7 +1761,10 @@ SUBCHANNELS=1,2,3
                 # running compute-server-setup.sh on cfgm sets nova.conf's
                 # sql access from ip instead of localhost, causing privilege
                 # degradation for nova tables
-                local("sudo ./contrail_setup_utils/compute-server-setup.sh")
+                if self._args.dpdk:
+                    local("sudo DPDK_MODE=True ./contrail_setup_utils/compute-server-setup.sh")
+                else:
+                    local("sudo ./contrail_setup_utils/compute-server-setup.sh")
             else:
                 #use contrail specific vif driver
                 local('openstack-config --set /etc/nova/nova.conf DEFAULT libvirt_vif_driver nova_contrail_vif.contrailvif.VRouterVIFDriver')
