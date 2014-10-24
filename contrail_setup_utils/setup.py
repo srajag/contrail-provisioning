@@ -1473,6 +1473,7 @@ HWADDR=%s
                     compute_dev = self.get_device_by_ip (compute_ip)
 
             dpdk = self._args.dpdk
+            pci_dev = "" # Has to be in scope of the entire funcion not in the 'if' below
             if dpdk:
                 platform_mode = "dpdk"
                 pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(dev), capture=True)
