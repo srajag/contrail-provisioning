@@ -14,6 +14,12 @@ template = string.Template("""
 [DEFAULT]
 # Everything in this section is optional
 
+# DPDK or legacy work mode
+platform=$__contrail_work_mode__
+
+# Physical address of PCI used by dpdk
+physical_interface_address=$__pci_dev__
+
 # IP address and port to be used to connect to collector. If these are not
 # configured, value provided by discovery service will be used. Multiple
 # IP:port strings separated by space can be provided
