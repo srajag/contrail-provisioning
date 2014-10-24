@@ -1454,12 +1454,6 @@ HWADDR=%s
             vgw_intf_list = self._args.vgw_intf_list
             vgw_gateway_routes = self._args.vgw_gateway_routes
             multi_net= False
-            dpdk = self._args.dpdk
-            if dpdk:
-                platform_mode = "dpdk"
-                pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(dev), capture=True)
-            else:
-                platform_mode = "nic"
             if non_mgmt_ip :
                 multi_net= True
                 vhost_ip= non_mgmt_ip
@@ -1477,6 +1471,13 @@ HWADDR=%s
                 dev = self.get_device_by_ip (vhost_ip)
                 if multi_net:
                     compute_dev = self.get_device_by_ip (compute_ip)
+
+            dpdk = self._args.dpdk
+            if dpdk:
+                platform_mode = "dpdk"
+                pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(dev), capture=True)
+            else:
+                platform_mode = "nic"
 
             mac = None
             if dev and dev != 'vhost0' :
