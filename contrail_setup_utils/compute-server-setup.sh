@@ -126,6 +126,12 @@ openstack-config --set /etc/nova/nova.conf DEFAULT libvirt_vif_driver nova_contr
 # Use noopdriver for firewall
 openstack-config --set /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
 
+# Set userspace vhost and hugepages for DPDK vRouter
+if [ "$DPDK_MODE" == "True" ]; then
+    openstack-config --set /etc/nova/nova.conf CONTRAIL use_userspace_vhost true
+    openstack-config --set /etc/nova/nova.conf LIBVIRT use_huge_pages true
+fi
+
 if [ $VMWARE_IP ]; then
     openstack-config --set /etc/nova/nova.conf vmware host_ip $VMWARE_IP
     openstack-config --set /etc/nova/nova.conf vmware host_username $VMWARE_USERNAME
