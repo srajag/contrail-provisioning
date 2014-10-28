@@ -1477,8 +1477,6 @@ HWADDR=%s
             if dpdk:
                 platform_mode = "dpdk"
                 pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(dev), capture=True)
-            else:
-                platform_mode = "nic"
 
             mac = None
             if dev and dev != 'vhost0' :
