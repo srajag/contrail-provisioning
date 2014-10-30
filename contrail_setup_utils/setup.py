@@ -1477,6 +1477,7 @@ HWADDR=%s
             if dpdk:
                 platform_mode = "dpdk"
                 pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(dev), capture=True)
+                phys_mac = netifaces.ifaddresses (dev)[netifaces.AF_LINK][0][ 'addr']
 
             mac = None
             if dev and dev != 'vhost0' :
@@ -1531,6 +1532,7 @@ HWADDR=%s
                     '__vmware_physical_interface__': vmware_dev,
                     '__contrail_work_mode__': platform_mode,
                     '__pci_dev__': pci_dev,
+                    '__physical_interface_mac__': phys_mac,
                 }
                 self._template_substitute_write(vnswad_conf_template.template,
                         vnswad_conf_template_vals, temp_dir_name + '/vnswad.conf')
