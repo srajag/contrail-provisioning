@@ -117,7 +117,14 @@ openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_proxyclient_address
 openstack-config --set /etc/nova/nova.conf DEFAULT security_group_api $OS_NET
 
 openstack-config --set /etc/nova/nova.conf DEFAULT heal_instance_info_cache_interval  0
-openstack-config --set /etc/nova/nova.conf DEFAULT libvirt_cpu_mode none
+
+# Running DPDK apps inside VMs require more modern cpu model
+if [ "$DPDK_MODE" == "True" ]; then
+    openstack-config --set /etc/nova/nova.conf DEFAULT libvirt_cpu_mode host-model
+else
+    openstack-config --set /etc/nova/nova.conf DEFAULT libvirt_cpu_mode none
+fi
+
 openstack-config --set /etc/nova/nova.conf DEFAULT image_cache_manager_interval 0
 
 #use contrail specific vif driver
