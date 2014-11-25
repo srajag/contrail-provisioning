@@ -53,6 +53,15 @@ log_local=1
 # Possible values are true(enable) and false(disable)
 # headless_mode=
 
+# DPDK or legacy work mode
+platform=$__contrail_work_mode__
+
+# Physical address of PCI used by dpdk
+physical_interface_address=$__pci_dev__
+
+# MAC address of device used by dpdk
+physical_interface_mac=$__physical_interface_mac__
+
 [DISCOVERY]
 # If COLLECTOR and/or CONTROL-NODE and/or DNS is not specified this section is 
 # mandatory. Else this section is optional

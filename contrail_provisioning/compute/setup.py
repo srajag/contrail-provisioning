@@ -49,6 +49,8 @@ class ComputeSetup(ContrailSetup):
             'vmware_vmpg_vswitch': 'c0ntrail123',
             'no_contrail_openstack': False,
             'orchestrator': 'openstack',
+            'dpdk': False,
+            'workaround_mgmt_ip': None,
         }
 
         self.parse_args(args_str)
@@ -100,6 +102,8 @@ class ComputeSetup(ContrailSetup):
         parser.add_argument("--no_contrail_openstack", help = "Do not provision contrail Openstack in compute node.", action="store_true")
         parser.add_argument("--metadata_secret", help = "Metadata Proxy secret from openstack node")
         parser.add_argument("--orchestrator", help = "Orchestrator used, example openstack, vcenter")
+        parser.add_argument("--dpdk", help = "vRouter/DPDK mode.", action="store_true")
+        parser.add_argument("--workaround_mgmt_ip", help = "Workaround for managment IP Address")
 
         self._args = parser.parse_args(self.remaining_argv)
 
