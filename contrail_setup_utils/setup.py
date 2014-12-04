@@ -1635,7 +1635,7 @@ SUBCHANNELS=1,2,3
                             local("sudo chkconfig network on")
                             local("sudo chkconfig supervisor-vrouter on")
                 # end pdist == centos | fedora
-                if pdist == 'Ubuntu' and not dpdk:
+                if pdist == 'Ubuntu':
                     self._rewrite_net_interfaces_file(dev, mac, vhost_ip, netmask, gateway)
                 # end pdist == ubuntu
 
