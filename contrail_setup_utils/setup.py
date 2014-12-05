@@ -189,7 +189,6 @@ class Setup(object):
             'haproxy': False,
             'ncontrols' : 2,
             'physical_interface': None,
-            'workaround_mgmt_ip': None,
             'non_mgmt_ip': None,
             'non_mgmt_gw': None,
             'vgw_public_subnet': None,
@@ -247,7 +246,6 @@ class Setup(object):
                             help = "Role of server (config, openstack, control, compute, collector, webui, database")
         parser.add_argument("--cfgm_ip", help = "IP Address of Configuration Node")
         parser.add_argument("--mgmt_self_ip", help = "Managment IP Address of any Node")
-        parser.add_argument("--workaround_mgmt_ip", help = "Workaround for managment IP Address")
         parser.add_argument("--openstack_ip", help = "IP Address of Openstack Node")
         parser.add_argument("--internal_vip", help = "Internal VIP Address of HA Openstack Nodes")
         parser.add_argument("--external_vip", help = "External VIP Address of HA Openstack Nodes")
@@ -922,8 +920,6 @@ HWADDR=%s
                                             %(quantum_service_protocol, temp_dir_name))
             local("echo 'ADMIN_TOKEN=%s' >> %s/ctrl-details" %(ks_admin_password, temp_dir_name))
             local("echo 'CONTROLLER=%s' >> %s/ctrl-details" %(keystone_ip, temp_dir_name))
-            if self._args.workaround_mgmt_ip:
-                local("echo 'WORKAROUND_MGMT_IP=%s' >> %s/ctrl-details" %(self._args.workaround_mgmt_ip, temp_dir_name))
             if self._args.mgmt_self_ip:
                 local("echo 'SELF_MGMT_IP=%s' >> %s/ctrl-details" %(self._args.mgmt_self_ip, temp_dir_name))
             if self._args.openstack_ip_list:
