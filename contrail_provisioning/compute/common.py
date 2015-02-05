@@ -163,7 +163,7 @@ class ComputeBaseSetup(ContrailSetup, ComputeNetworkSetup):
             platform_mode = "default"
             if self._args.dpdk:
                 platform_mode = "dpdk"
-                pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(dev), capture=True)
+                pci_dev = local("/opt/contrail/bin/dpdk_nic_bind.py --status | grep %s | cut -d' ' -f 1" %(self.dev), capture=True)
 
             vnswad_conf_template_vals = {'__contrail_vhost_ip__': cidr,
                 '__contrail_vhost_gateway__': self.gateway,
