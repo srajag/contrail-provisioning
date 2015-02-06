@@ -286,7 +286,7 @@ SUBCHANNELS=1,2,3
         # setup lbaas prereqs
         self.setup_lbaas_prereq()
 
-        if not self._args.dpdk and self.pdist in ['Ubuntu']:
+        if self.pdist in ['Ubuntu']:
             self._rewrite_net_interfaces_file(self.dev, self.mac, self.vhost_ip, self.netmask, self.gateway)
         # end self.pdist == ubuntu
 
