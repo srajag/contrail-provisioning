@@ -122,14 +122,8 @@ openstack-config --set /etc/nova/nova.conf DEFAULT ec2_private_dns_show_ip False
 openstack-config --set /etc/nova/nova.conf DEFAULT novncproxy_base_url http://$CONTROLLER_MGMT:5999/vnc_auto.html
 openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_enabled true
 
-# Workaround for vnc IP. To be removed when vhost traffic in DPDK mode is implemented
-if [ $WORKAROUND_MGMT_IP ]; then
-    openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_listen $WORKAROUND_MGMT_IP
-    openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_proxyclient_address $WORKAROUND_MGMT_IP
-else
-    openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_listen $COMPUTE
-    openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_proxyclient_address $COMPUTE
-fi
+openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_listen $COMPUTE
+openstack-config --set /etc/nova/nova.conf DEFAULT vncserver_proxyclient_address $COMPUTE
 
 openstack-config --set /etc/nova/nova.conf DEFAULT security_group_api $OS_NET
 openstack-config --set /etc/nova/nova.conf DEFAULT heal_instance_info_cache_interval  0
